@@ -2,7 +2,7 @@ import os
 import cherrypy
 from jinja2 import Environment, FileSystemLoader
 import json
-from scripts.srapper import get_redis_connection
+from .srapper import get_redis_connection
 
 # GET CURRENT DIRECTORY
 CUR_DIR = os.path.dirname(os.path.abspath(__file__))
