@@ -4,3 +4,4 @@ env
 .idea/*
 scripts/Bhavcopy.csv
 scripts/Bhavcopy.zip
+scripts/celerybeat-schedule
