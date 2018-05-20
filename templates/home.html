@@ -91,7 +91,14 @@ $('#searchBtn').click(function () {
             $('#headerText').text("0 records found")
            }
            else {
-             $('#headerText').html(result.length+" records found");
+             var rText = '';
+             if(result.length > 10) {
+               rText = result.length+" records found. Showing with top 10 stock records.";
+             }
+             else {
+               rText =  result.length+" records found";
+             }
+             $('#headerText').html(rText);
             $("#tBody").html(userRow);
            }
          }

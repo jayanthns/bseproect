@@ -20,3 +20,12 @@ def get_date_str():
 
 def get_redis_connection():
     return redis.Redis('localhost', port=6379, db=0)
+
+def get_sorted_list(result, type):
+    if type == 'tuple':
+        result = sorted(result, key=lambda x: (x[2], x[3], x[4], x[5]))
+        result = result[::-1]
+    elif type == 'dict':
+        result = sorted(result, key=lambda x: (x['open'], x['high'], x['low'], x['close']))
+        result = result[::-1]
+    return result

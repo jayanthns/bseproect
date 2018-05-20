@@ -5,7 +5,7 @@ import cherrypy
 from jinja2 import Environment, FileSystemLoader
 
 # GET CURRENT DIRECTORY
-from helper import get_redis_connection
+from helper import get_redis_connection, get_sorted_list
 
 CUR_DIR = os.path.dirname(os.path.abspath(__file__))
 env = Environment(loader=FileSystemLoader(CUR_DIR), trim_blocks=True)
@@ -32,11 +32,12 @@ class UserService(object):
         users = json.loads(r.get('users'))
         response = {}
         try:
-            res = [user for user in users if name.lower() == user["name"].lower()]
-            print res.__len__()
+            res = [user for user in users if name.lower() in user["name"].lower()]
+
+            result = get_sorted_list(res, 'dict')
 
             response['success'] = True
-            response['users'] = res
+            response['users'] = result[:10]
             response['length'] = res.__len__()
             return response
         except:

@@ -9,7 +9,7 @@ from celery import Celery
 app = Celery("BSEApp")
 app.config_from_object("celeryconfig")
 
-from helper import get_date_str, get_redis_connection
+from helper import get_date_str, get_redis_connection, get_sorted_list
 
 zip_filename = 'Bhavcopy.zip'
 csv_filename = 'Bhavcopy.csv'
@@ -65,8 +65,7 @@ def main1():
             )
             for row in spamreader
         ]
-        result = sorted(result, key=lambda x: (x[2], x[3], x[4], x[5]))
-        result = result[::-1]
+        result = get_sorted_list(result, 'tuple')
         result = [obj.__dict__ for obj in result]  # List of dictionaries
 
     add_to_redis(result_dict=result)
