@@ -58,7 +58,7 @@ if __name__ == '__main__':
     }
     webapp = Index()
     webapp.get_users = UserService()
-    
+
     cherrypy.config.update({
         'server.socket_host': '13.127.129.1',
         'server.socket_port': 80,
