@@ -1,7 +1,10 @@
+amqp==2.2.2
 asn1crypto==0.24.0
 attrs==18.1.0
 Automat==0.6.0
 backports.functools-lru-cache==1.5
+billiard==3.5.0.3
+celery==4.1.0
 cffi==1.11.5
 cheroot==6.3.0
 CherryPy==15.0.0
@@ -14,6 +17,7 @@ idna==2.6
 incremental==17.5.0
 ipaddress==1.0.22
 Jinja2==2.10
+kombu==4.1.0
 lxml==4.2.1
 Mako==1.0.7
 MarkupSafe==1.0
@@ -35,5 +39,6 @@ service-identity==17.0.0
 six==1.11.0
 tempora==1.11
 Twisted==18.4.0
+vine==1.1.4
 w3lib==1.19.0
 zope.interface==4.5.0
