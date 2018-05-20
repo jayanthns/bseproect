@@ -18,7 +18,7 @@ BSEObj = namedtuple('BSEObj', 'code name open high low close')
 
 
 def get_redis_connection():
-    return redis.Redis('13.127.129.1', port=6379, db=0)
+    return redis.Redis('localhost', port=6379, db=0)
 
 
 def download_zip_and_extract():
@@ -48,9 +48,7 @@ def add_to_redis(result_dict):
     r.set('ten_users', json.dumps(result_dict[:10]))
 
 
-
-# Executing starts here
-if __name__ == '__main__':
+def main1():
     download_zip_and_extract()
 
     with open(csv_filename, 'rb') as csvfile:
@@ -70,3 +68,6 @@ if __name__ == '__main__':
         result = [obj.__dict__ for obj in result]  # List of dictionaries
 
     add_to_redis(result_dict=result)
+
+# Executing starts here
+if __name__ == '__main__':main1()
