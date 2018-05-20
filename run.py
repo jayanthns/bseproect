@@ -32,7 +32,7 @@ class UserService(object):
         users = json.loads(r.get('users'))
         response = {}
         try:
-            res = [user for user in users if name == user["name"]]
+            res = [user for user in users if name.lower() == user["name"].lower()]
             print res.__len__()
 
             response['success'] = True
@@ -61,8 +61,4 @@ if __name__ == '__main__':
     webapp = Index()
     webapp.get_users = UserService()
     cherrypy.server.socket_host = '0.0.0.0'
-    # cherrypy.config.update({
-    #     'server.socket_host': '13.127.129.1',
-    #     'server.socket_port': 80,
-    # })
     cherrypy.quickstart(webapp, '/', conf)

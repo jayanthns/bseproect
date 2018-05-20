@@ -5,6 +5,7 @@ import urllib2
 import zipfile
 from collections import namedtuple
 from celery import Celery
+
 app = Celery("BSEApp")
 app.config_from_object("celeryconfig")
 
@@ -27,7 +28,7 @@ def download_zip_and_extract():
         pass
 
     """ Download new zip file """
-    response = urllib2.urlopen('https://www.bseindia.com/download/BhavCopy/Equity/EQ'+get_date_str()+'_CSV.ZIP')
+    response = urllib2.urlopen('https://www.bseindia.com/download/BhavCopy/Equity/EQ' + get_date_str() + '_CSV.ZIP')
     output = open(zip_filename, "w")
     output.write(response.read())
     output.close()
@@ -36,6 +37,7 @@ def download_zip_and_extract():
     zipinfos = zip_ref.infolist()
     zipinfos[0].filename = csv_filename
     zip_ref.extract(zipinfos[0])
+
 
 def add_to_redis(result_dict):
     json_string = json.dumps(result_dict)
@@ -54,18 +56,22 @@ def main1():
         next(spamreader, None)  # Skip Header Row
         result = [
             BSEObj(
-                row[0].rstrip(),
-                row[1].rstrip(),
-                row[4].rstrip(),
-                row[5].rstrip(),
-                row[6].rstrip(),
-                row[7].rstrip()
+                row[0].rstrip().strip(),
+                row[1].rstrip().strip(),
+                row[4].rstrip().strip(),
+                row[5].rstrip().strip(),
+                row[6].rstrip().strip(),
+                row[7].rstrip().strip()
             )
             for row in spamreader
         ]
+        result = sorted(result, key=lambda x: (x[2], x[3], x[4], x[5]))
+        result = result[::-1]
         result = [obj.__dict__ for obj in result]  # List of dictionaries
 
     add_to_redis(result_dict=result)
 
+
 # Executing starts here
-if __name__ == '__main__':main1()
+if __name__ == '__main__':
+    main1()

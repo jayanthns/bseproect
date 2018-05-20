@@ -16,12 +16,13 @@
   <a class="active" href="/">BSE</a>
   <div class="search-container">
     <div class="search-container">
-      <input type="text" id="searchName" placeholder="Search.." name="search">
+      <input type="text" id="searchName" placeholder="Search by name" name="search">
       <button id="searchBtn" type="submit"><i class="fa fa-search"></i></button>
     </div>
   </div>
 </div>
-
+  <br>
+  <a style="" href="/"><button type="button" class="btn btn-success">Load Top 10 Records</button></a>
   <br>
   <h1 id="headerText">Top 10 Records</h1>
   <br>
@@ -81,6 +82,7 @@ $('#searchBtn').click(function () {
       $body.addClass("loading");
      $.post('/get_users', {'name': name})
        .done(function (result) {
+         $('#searchName').val('');
          $body.removeClass("loading");
          if(result.success) {
            var userRow = getUserRow(result.users);
