@@ -18,7 +18,7 @@ BSEObj = namedtuple('BSEObj', 'code name open high low close')
 
 
 def get_redis_connection():
-    return redis.Redis('localhost', port=6379, db=0)
+    return redis.Redis('13.127.129.1', port=6379, db=0)
 
 
 def download_zip_and_extract():
