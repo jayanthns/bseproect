@@ -9,3 +9,6 @@ CELERYBEAT_SCHEDULE = {
         "args": []
     }
 }
+
+# Command to run celery beat
+# celery -A srapper worker -B --loglevel=INFO
