@@ -5,6 +5,9 @@ import redis
 import urllib2
 import zipfile
 from collections import namedtuple
+from celery import Celery
+app = Celery("BSEApp")
+app.config_from_object("celeryconfig")
 
 from helper import get_date_str
 
@@ -48,6 +51,7 @@ def add_to_redis(result_dict):
     r.set('ten_users', json.dumps(result_dict[:10]))
 
 
+@app.task
 def main1():
     download_zip_and_extract()
 
