@@ -1,7 +1,6 @@
 import csv
 import json
 import os
-import redis
 import urllib2
 import zipfile
 from collections import namedtuple
@@ -9,8 +8,7 @@ from celery import Celery
 app = Celery("BSEApp")
 app.config_from_object("celeryconfig")
 
-from helper import get_date_str
-
+from helper import get_date_str, get_redis_connection
 
 zip_filename = 'Bhavcopy.zip'
 csv_filename = 'Bhavcopy.csv'
@@ -18,10 +16,6 @@ csv_filename = 'Bhavcopy.csv'
 current_path = os.path.dirname(os.path.abspath(__file__))
 
 BSEObj = namedtuple('BSEObj', 'code name open high low close')
-
-
-def get_redis_connection():
-    return redis.Redis('localhost', port=6379, db=0)
 
 
 def download_zip_and_extract():

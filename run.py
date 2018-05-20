@@ -1,10 +1,12 @@
+import json
 import os
+
 import cherrypy
 from jinja2 import Environment, FileSystemLoader
-import json
-from .srapper import get_redis_connection
 
 # GET CURRENT DIRECTORY
+from helper import get_redis_connection
+
 CUR_DIR = os.path.dirname(os.path.abspath(__file__))
 env = Environment(loader=FileSystemLoader(CUR_DIR), trim_blocks=True)
 

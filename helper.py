@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+import redis
 
 # Week days 0 is Monday, so 6 is Sunday
 # If day is 5(Saturday) get friday with substract 1 day
@@ -12,7 +13,10 @@ def get_date_str():
     date_str = today.strftime("%d%m%y")
     return date_str
 
-today = datetime.now()
-today = today - timedelta(days=(day[2] for day in WEEK_DAY if day[1] == today.weekday()).next())
-date_str = today.strftime("%d%m%y")
-print date_str
+# today = datetime.now()
+# today = today - timedelta(days=(day[2] for day in WEEK_DAY if day[1] == today.weekday()).next())
+# date_str = today.strftime("%d%m%y")
+# print date_str
+
+def get_redis_connection():
+    return redis.Redis('localhost', port=6379, db=0)

@@ -2,6 +2,6 @@ env
 *.pyc
 .idea
 .idea/*
-scripts/Bhavcopy.csv
-scripts/Bhavcopy.zip
-scripts/celerybeat-schedule
+Bhavcopy.csv
+Bhavcopy.zip
+celerybeat-schedule
