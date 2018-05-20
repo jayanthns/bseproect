@@ -54,11 +54,13 @@
     </tbody>
   </table>
 </div>
+<div class="modal"><!-- Place at bottom of page --></div>
 </body>
 <script>
 //  console.log("{{name}}")
 //  var data = JSON.parse("{{users}}");
 //  console.log(data);
+$body = $("body");
 function getUserRow(users) {
   row = "";
   users.forEach(function (user) {
@@ -76,9 +78,10 @@ function getUserRow(users) {
 $('#searchBtn').click(function () {
     var name = $('#searchName').val();
     if(name.length != 0) {
+      $body.addClass("loading");
      $.post('/get_users', {'name': name})
        .done(function (result) {
-         console.log(result.success)
+         $body.removeClass("loading");
          if(result.success) {
            var userRow = getUserRow(result.users);
            if (result.length === 0) {
