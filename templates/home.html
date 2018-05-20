@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>BSE</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/static/css/custom.css">
+</head>
+<body>
+<div class="container">
+  <div class="topnav">
+  <a class="active" href="/">BSE</a>
+  <div class="search-container">
+    <div class="search-container">
+      <input type="text" id="searchName" placeholder="Search.." name="search">
+      <button id="searchBtn" type="submit"><i class="fa fa-search"></i></button>
+    </div>
+  </div>
+</div>
+
+  <br>
+  <h1 id="headerText">Top 10 Records</h1>
+  <br>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Code</th>
+        <th>Name</th>
+        <th>Open</th>
+        <th>High</th>
+        <th>Low</th>
+        <th>Close</th>
+      </tr>
+    </thead>
+    <tbody id="tBody">
+    {% if users%}
+    {% for user in users %}
+      <tr>
+        <td>{{user.code}}</td>
+        <td>{{user.name}}</td>
+        <td>{{user.open}}</td>
+        <td>{{user.high}}</td>
+        <td>{{user.low}}</td>
+        <td>{{user.close}}</td>
+      </tr>
+    {% endfor %}
+    {% else %}
+    Data currently not available
+    {% endif %}
+    </tbody>
+  </table>
+</div>
+</body>
+<script>
+//  console.log("{{name}}")
+//  var data = JSON.parse("{{users}}");
+//  console.log(data);
+function getUserRow(users) {
+  row = "";
+  users.forEach(function (user) {
+    row += "<tr>";
+    row += "<td>" + user.code + "</td>";
+    row += "<td>" + user.name + "</td>";
+    row += "<td>" + user.open + "</td>";
+    row += "<td>" + user.high + "</td>";
+    row += "<td>" + user.low + "</td>";
+    row += "<td>" + user.close + "</td>";
+    row += "</tr>";
+  });
+  return row;
+}
+$('#searchBtn').click(function () {
+    var name = $('#searchName').val();
+    if(name.length != 0) {
+     $.post('/get_users', {'name': name})
+       .done(function (result) {
+         console.log(result.success)
+         if(result.success) {
+           var userRow = getUserRow(result.users);
+           if (result.length === 0) {
+            $("#tBody").html("No Results found");
+            $('#headerText').text("0 records found")
+           }
+           else {
+             $('#headerText').html(result.length+" records found");
+            $("#tBody").html(userRow);
+           }
+         }
+         else {
+            $("#tBody").html("No Results found");
+         }
+       })
+    }
+    else {
+      alert('Empty value can not be searched');
+    }
+  })
+</script>
+</html>
