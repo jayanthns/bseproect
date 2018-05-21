@@ -26,6 +26,6 @@ def get_sorted_list(result, type):
         result = sorted(result, key=lambda x: (x[2], x[3], x[4], x[5]))
         result = result[::-1]
     elif type == 'dict':
-        result = sorted(result, key=lambda x: (x['open'], x['high'], x['low'], x['close']))
+        result = sorted(result, key=lambda x: (float(x['open']), float(x['high']), float(x['low']), float(x['close'])))
         result = result[::-1]
     return result

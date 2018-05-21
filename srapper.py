@@ -21,30 +21,38 @@ BSEObj = namedtuple('BSEObj', 'code name open high low close')
 
 def download_zip_and_extract():
     """Remove old downloaded zip and csv file"""
+
+    """ Download new zip file """
     try:
-        os.remove(zip_filename)
-        os.remove(csv_filename)
+        response = urllib2.urlopen('https://www.bseindia.com/download/BhavCopy/Equity/EQ' + get_date_str() + '_CSV.ZIP')
+        # response = urllib2.urlopen('https://www.bseindia.com/download/BhavCopy/Equity/EQ' + '180518' + '_CSV.ZIP')
+        try:
+            os.remove(zip_filename)
+            os.remove(csv_filename)
+        except:
+            pass
+        output = open(zip_filename, "w")
+        output.write(response.read())
+        output.close()
+
+        zip_ref = zipfile.ZipFile(os.path.dirname(os.path.abspath(__file__)) + "/" + zip_filename, 'r')
+        zipinfos = zip_ref.infolist()
+        zipinfos[0].filename = csv_filename
+        zip_ref.extract(zipinfos[0])
+
     except:
         pass
 
-    """ Download new zip file """
-    response = urllib2.urlopen('https://www.bseindia.com/download/BhavCopy/Equity/EQ' + get_date_str() + '_CSV.ZIP')
-    output = open(zip_filename, "w")
-    output.write(response.read())
-    output.close()
-
-    zip_ref = zipfile.ZipFile(os.path.dirname(os.path.abspath(__file__)) + "/" + zip_filename, 'r')
-    zipinfos = zip_ref.infolist()
-    zipinfos[0].filename = csv_filename
-    zip_ref.extract(zipinfos[0])
-
 
 def add_to_redis(result_dict):
-    json_string = json.dumps(result_dict)
+    print("ADDING TO REDIS")
+    sorted_result = get_sorted_list(result_dict, 'dict')
+    json_string = json.dumps(sorted_result)
     r = get_redis_connection()
     r.flushall()
     r.set('users', json_string)
-    r.set('ten_users', json.dumps(result_dict[:10]))
+    r.set('ten_users', json.dumps(sorted_result[:10]))
+    print("SUCCESS ADDED")
 
 
 @app.task
@@ -64,7 +72,7 @@ def main1():
                 row[7].rstrip().strip()
             )
             for row in spamreader
-        ]
+            ]
         result = get_sorted_list(result, 'tuple')
         result = [obj.__dict__ for obj in result]  # List of dictionaries
 
