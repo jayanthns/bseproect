@@ -4,6 +4,8 @@ import os
 import urllib2
 import zipfile
 from collections import namedtuple
+from datetime import datetime
+
 from celery import Celery
 
 app = Celery("BSEApp")
@@ -57,6 +59,7 @@ def add_to_redis(result_dict):
 
 @app.task
 def main1():
+    print(datetime.utcnow())
     download_zip_and_extract()
 
     with open(csv_filename, 'rb') as csvfile:

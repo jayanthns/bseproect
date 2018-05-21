@@ -1,11 +1,12 @@
 from datetime import timedelta
 from celery.schedules import crontab
 from srapper import app
-
+app.conf.timezone = 'Asia/Kolkata'
 app.conf.beat_schedule = {
     "something": {
         'task': 'srapper.main1',
-        'schedule': crontab(minute=31, hour=11),
+        'schedule': crontab(hour=18, minute=27),
+
     },
 }
 
