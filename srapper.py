@@ -21,12 +21,12 @@ current_path = os.path.dirname(os.path.abspath(__file__))
 BSEObj = namedtuple('BSEObj', 'code name open high low close')
 
 
-def download_zip_and_extract():
+def download_zip_and_extract(day=0):
     """Remove old downloaded zip and csv file"""
 
     """ Download new zip file """
     try:
-        response = urllib2.urlopen('https://www.bseindia.com/download/BhavCopy/Equity/EQ' + get_date_str() + '_CSV.ZIP')
+        response = urllib2.urlopen('https://www.bseindia.com/download/BhavCopy/Equity/EQ' + get_date_str(day) + '_CSV.ZIP')
         # response = urllib2.urlopen('https://www.bseindia.com/download/BhavCopy/Equity/EQ' + '180518' + '_CSV.ZIP')
         try:
             os.remove(zip_filename)
@@ -43,7 +43,7 @@ def download_zip_and_extract():
         zip_ref.extract(zipinfos[0])
 
     except:
-        pass
+        download_zip_and_extract(1)
 
 
 def add_to_redis(result_dict):
@@ -60,7 +60,7 @@ def add_to_redis(result_dict):
 @app.task
 def main1():
     print(datetime.utcnow())
-    download_zip_and_extract()
+    download_zip_and_extract(0)
 
     with open(csv_filename, 'rb') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=',', quotechar='|')

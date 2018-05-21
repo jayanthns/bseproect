@@ -6,6 +6,7 @@ from jinja2 import Environment, FileSystemLoader
 
 # GET CURRENT DIRECTORY
 from helper import get_redis_connection, get_sorted_list
+from srapper import main1
 
 CUR_DIR = os.path.dirname(os.path.abspath(__file__))
 env = Environment(loader=FileSystemLoader(CUR_DIR), trim_blocks=True)
@@ -20,7 +21,8 @@ class Index(object):
         try:
             users = json.loads(r.get('ten_users'))
         except:
-            users = None
+            main1()  # If file was not downloaded
+            users = json.loads(r.get('ten_users'))
 
         return template.render(users=users, name='JAYANTH')
 
