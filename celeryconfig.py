@@ -1,6 +1,6 @@
 from datetime import timedelta
 from celery.schedules import crontab
-from srapper import app
+from scrapper import app
 # app.conf.timezone = 'Asia/Kolkata'
 # CELERY_TIMEZONE = "Asia/Kolkata"
 app.conf.beat_schedule = {
