@@ -12,7 +12,6 @@ CUR_DIR = os.path.dirname(os.path.abspath(__file__))
 env = Environment(loader=FileSystemLoader(CUR_DIR), trim_blocks=True)
 
 
-
 class Index(object):
     @cherrypy.expose
     def index(self):
@@ -21,10 +20,11 @@ class Index(object):
         try:
             users = json.loads(r.get('ten_users'))
         except:
-            main1()  # If file was not downloaded
+            main1()  # If file was not downloaded then download the latest file.
             users = json.loads(r.get('ten_users'))
 
         return template.render(users=users, name='JAYANTH')
+
 
 @cherrypy.expose
 class UserService(object):
@@ -34,7 +34,7 @@ class UserService(object):
         users = json.loads(r.get('users'))
         response = {}
         try:
-            res = [user for user in users if name.lower() in user["name"].lower()]
+            res = [user for user in users if name.lower() in user["name"].lower()]  # search by name (substring match)
 
             result = get_sorted_list(res, 'dict')
 
@@ -45,6 +45,7 @@ class UserService(object):
         except:
             response['success'] = False
             return response
+
 
 if __name__ == '__main__':
     conf = {
