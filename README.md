@@ -1,5 +1,6 @@
 # bseproect
 # Project setup
+url: http://13.127.129.1:8080/
 1. Create virtual environment with python 2.7 and activate the environment.
 2. Clone the project. And go inside the project.
 3. Install the requirements. "pip install -r requirements.txt"
